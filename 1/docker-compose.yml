@@ -1,0 +1,32 @@
+services:
+  postgre:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - appnet
+  mainapp:
+    build: ./app
+    environment:
+      - dbname=testdb
+      - dbuser=user
+      - dbpassword=password
+      - dbhostname=postgre
+    depends_on:
+      - postgre
+    ports:
+      - 8080:5000
+    networks:
+      - appnet
+    command: python3 app.py
+
+
+volumes:
+  db:
+networks:
+  appnet:
