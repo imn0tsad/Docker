@@ -1,0 +1,9 @@
+CREATE DATABASE sensor_data;
+
+\c sensor_data
+
+CREATE TABLE processed_data (
+    id SERIAL PRIMARY KEY,
+    avg_temperature REAL,
+    avg_humidity REAL
+);

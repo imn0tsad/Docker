@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.db:/docker-entrypoint-initdb.d/init.db
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - mynetwork
+
+  generator:
+    build: ./generator
+    depends_on:
+      - rabbitmq
+    networks:
+      - mynetwork
+
+  processor:
+    build: ./processor
+    depends_on:
+      - rabbitmq
+      - postgres
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
