@@ -2,7 +2,7 @@ from prometheus_client import CollectorRegistry, Gauge, generate_latest, push_to
 import psutil
 import time
 
-# Конфигурация Pushgateway
+
 PUSHGATEWAY_URL = 'http://ip:9091' #server ip на котором стоит compose файл
 JOB_NAME = 'system_metrics'
 
